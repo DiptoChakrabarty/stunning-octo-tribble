@@ -12,6 +12,7 @@ var example = `
 <body>
 <h1> Hello </h1>
 <a href="/other-page">Link to another page</a>
+<a href="/chalo-link">Chalo Theek hai Link</a>
 </body>
 </html>
 `
