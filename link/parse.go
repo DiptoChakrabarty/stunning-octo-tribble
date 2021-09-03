@@ -2,8 +2,10 @@ package link
 
 import (
 	"fmt"
-	"golang.org/x/net/html"
 	"io"
+	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // this struct defines a link
@@ -46,7 +48,22 @@ func buildLink(node *html.Node) Link {
 			break
 		}
 	}
+	result.text = texttraverse(node)
 	return result
+}
+
+func texttraverse(node *html.Node) string {
+	if node.Type == html.TextNode {
+		return node.Data
+	}
+	if node.Type != html.ElementNode {
+		return ""
+	}
+	var result string
+	for c := node.FirstChild; c != nil; c = c.NextSibling {
+		result = result + texttraverse(c) + " "
+	}
+	return strings.Join(strings.Fields(result), " ")
 }
 
 func traverse(node *html.Node, padding string) {
