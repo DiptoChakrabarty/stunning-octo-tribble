@@ -1,21 +1,28 @@
 package sitemap
 
 import (
+	"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
 )
 
-func GenerateBaseUrl(resp *http.Response) string {
+func GenerateBaseUrl(UrlName *string) (string, []link.Link) {
+	resp, err := http.Get(*UrlName)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	links, _ := link.Parse(resp.Body)
+
 	redirectUrl := resp.Request.URL // in case users give http redirects to https taken
 	baseUrl := &url.URL{
 		Scheme: redirectUrl.Scheme,
 		Host:   redirectUrl.Host,
 	}
 	base := baseUrl.String() // the original base URL from the url
-	return base
+	return base, links
 }
 
 func GenerateLinks(links []link.Link, base string) []string {
@@ -28,5 +35,5 @@ func GenerateLinks(links []link.Link, base string) []string {
 			result = append(result, l.Href)
 		}
 	}
-	return result
+	return FilterLinks(base, result)
 }
