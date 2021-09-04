@@ -1,27 +1,28 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"strings"
-
 	"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
+	"net/http"
+	//"strings"
+	//"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
 )
 
-var example = `
-<html>
-<body>
-<h1> Hello </h1>
-<a href="/other-page">Link to another page</a>
-<a href="/chalo-link">Chalo Theek hai Link</a>
-</body>
-</html>
-`
-
 func main() {
-	r := strings.NewReader(example)
-	links, err := link.Parse(r)
+	urlFlag := flag.String("url", "https://github.com", "provide the url you wish to build sitemap for")
+	flag.Parse()
+	fmt.Println(*urlFlag)
+
+	resp, err := http.Get(*urlFlag)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%+v\n", links)
+	defer resp.Body.Close()
+
+	links, _ := link.Parse(resp.Body)
+
+	for _, l := range links {
+		fmt.Println(l)
+	}
 }
