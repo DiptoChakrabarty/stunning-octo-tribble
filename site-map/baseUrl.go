@@ -25,7 +25,7 @@ func GenerateBaseUrl(UrlName *string) (string, []link.Link) {
 	return base, links
 }
 
-func GenerateLinks(links []link.Link, base string) []string {
+func GenerateSiteLinks(links []link.Link, base string) []string {
 	var result []string
 	for _, l := range links {
 		switch {
