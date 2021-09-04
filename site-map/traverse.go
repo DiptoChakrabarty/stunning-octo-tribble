@@ -1,15 +1,16 @@
 package sitemap
 
-func TraverseUrl(urlStart string, maxdepth int) []string {
+func TraverseUrl(urlStart string, maxdepth int, maxLimit int) []string {
 	visited := make(map[string]struct{})
 	var q map[string]struct{}
 	nq := map[string]struct{}{
 		urlStart: struct{}{},
 	}
+	count := 0
 
 	for i := 0; i < maxdepth; i++ {
 		q, nq = nq, make(map[string]struct{})
-		if len(q) == 0 {
+		if len(q) == 0 || count > maxLimit {
 			break
 		}
 		for u, _ := range q {
@@ -23,6 +24,7 @@ func TraverseUrl(urlStart string, maxdepth int) []string {
 			for _, l := range sitelinks {
 				//fmt.Println(l)
 				nq[l] = struct{}{}
+				count = count + 1
 			}
 		}
 	}
