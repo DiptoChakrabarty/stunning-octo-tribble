@@ -10,8 +10,8 @@ import (
 
 // this struct defines a link
 type Link struct {
-	href string
-	text string
+	Href string
+	Text string
 }
 
 // parse a reader to generate links
@@ -44,11 +44,11 @@ func buildLink(node *html.Node) Link {
 	var result Link
 	for _, attr := range node.Attr {
 		if attr.Key == "href" {
-			result.href = attr.Val
+			result.Href = attr.Val
 			break
 		}
 	}
-	result.text = texttraverse(node)
+	result.Text = texttraverse(node)
 	return result
 }
 

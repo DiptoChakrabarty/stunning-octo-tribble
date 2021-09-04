@@ -4,9 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
+	"github.com/DiptoChakrabarty/stunning-octo-tribble/site-map"
 	"net/http"
-	//"strings"
-	//"github.com/DiptoChakrabarty/stunning-octo-tribble/link"
 )
 
 func main() {
@@ -24,5 +23,13 @@ func main() {
 
 	for _, l := range links {
 		fmt.Println(l)
+	}
+
+	base := sitemap.GenerateBaseUrl(resp) // the original base URL from the url
+	fmt.Println(base)
+
+	hrefs := sitemap.GenerateLinks(links, base)
+	for _, href := range hrefs {
+		fmt.Println(href)
 	}
 }
